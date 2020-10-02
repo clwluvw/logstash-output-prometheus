@@ -113,12 +113,14 @@ class LogStash::Outputs::Prometheus < LogStash::Outputs::Base
   def receive(event)
     @increment.each do |metric_name, val|
       labels = setup_event_labels(val, event)
-      $metrics[port.to_s + metric_name].increment(labels: labels)
+      value = get_counter_value(val, event)
+      $metrics[port.to_s + metric_name].increment(by: value, labels: labels)
     end
 
     @decrement.each do |metric_name, val|
       labels = setup_event_labels(val, event)
-      $metrics[port.to_s + metric_name].decrement(labels: labels)
+      value = get_counter_value(val, event)
+      $metrics[port.to_s + metric_name].decrement(by: value, labels: labels)
     end
 
     @set.each do |metric_name, val|
@@ -140,5 +142,15 @@ class LogStash::Outputs::Prometheus < LogStash::Outputs::Base
     end
 
     return labels     
+  end
+
+  protected
+  def get_counter_value(val, event)
+    value = 1.0
+    if val.key?('value')
+      value = event.sprintf(val['value']).to_f
+    end
+
+    return value
   end
 end # class LogStash::Outputs::Prometheus

@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
 gemspec
 
-gem 'logstash-core'
-gem 'logstash-core-plugin-api'
+logstash_path = ENV["LOGSTASH_PATH"] || "./logstash"
 
-gem 'prometheus-client', "2.1.0"
-gem "rack", ">= 1.6.11"
+gem 'logstash-core', :path => "#{logstash_path}/logstash-core"
+gem 'logstash-core-plugin-api', :path => "#{logstash_path}/logstash-core-plugin-api"
 
-gem 'logstash-devutils', ">= 1.3.6", :group => [:development]
+gem 'prometheus-client', '~> 2.1'
+gem 'rack', '~> 2.2', '>= 2.2.3'
+
+gem 'logstash-devutils', '~> 2.0', '>= 2.0.4'

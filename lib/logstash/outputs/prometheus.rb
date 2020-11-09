@@ -2,7 +2,6 @@
 require "logstash/outputs/base"
 require 'rack'
 require 'prometheus/middleware/exporter'
-require 'prometheus/middleware/collector'
 require 'prometheus/client'
 
 # An prometheus output that does nothing.

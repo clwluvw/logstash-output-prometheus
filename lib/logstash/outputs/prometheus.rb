@@ -32,7 +32,6 @@ class LogStash::Outputs::Prometheus < LogStash::Outputs::Base
 
       app =
       Rack::Builder.new(@port) do
-        use ::Rack::Deflater
         use ::Prometheus::Middleware::Exporter, registry: prom_server
 
         run ->(_) { [200, {'Content-Type' => 'text/html'}, ['Please access /metrics to see exposed metrics for this Logstash instance.']] }
